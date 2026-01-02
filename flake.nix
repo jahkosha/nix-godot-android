@@ -2,32 +2,32 @@
 {
 description = "A flake for building Godot 4 with Android templates and Gradle";
 
-inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
 inputs.android.url = "github:tadfisher/android-nixpkgs";
 
 outputs = { self, nixpkgs, android }: rec {
     system = "x86_64-linux";
-    version = "4.4.1.stable";
-    exporttemplateurl = "https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable/Godot_v4.4.1-stable_export_templates.tpz";
-    exporttemplatesha256 = "sha256-TjtUmI3WxCS6YfEmJSc8Gmk9bja4vyhRrW0Nb1MGt5w=";
+    version = "4.5.1.stable";
+    exporttemplateurl = "https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_export_templates.tpz";
+    exporttemplatesha256 = "sha256-a8ngfuG+nDMfF+sBJ5vcGeKsqxtjyeQuWteMEBKOwCY=";
     pkgs = import nixpkgs { inherit system; config = { allowUnfree = true; android_sdk.accept_license = true; }; };
 
     androidenv = android.sdk.x86_64-linux (sdkPkgs: with sdkPkgs; [
-        build-tools-34-0-0
+        build-tools-35-0-0
         cmdline-tools-latest
         platform-tools
-        platforms-android-34
+        platforms-android-35
     ]);
 
     packages.x86_64-linux.godot_4_wrapped =
         with pkgs;
-        godot_4_4.overrideAttrs (old: {
+        godot_4.overrideAttrs (old: {
             src = fetchFromGitHub {
                 name = "godot_${version}_wrapped";
                 owner = "godotengine";
                 repo = "godot";
-                rev = "49a5bc7b616bd04689a2c89e89bda41f50241464";
-                hash = "sha256-BBlKKsVURPYqKuxrwMbDD7tKHDfvihxbhXFnHWUyuDk=";
+                rev = "f62fdbde15035c5576dad93e586201f4d41ef0cb";
+                hash = "sha256-G2JsQh2I4QYx5xUyFlNZ8vxMXT63lgojdYND+ASgdDo=";
             };
 
             preBuild = ''
@@ -37,10 +37,10 @@ outputs = { self, nixpkgs, android }: rec {
                 substituteInPlace platform/android/export/export_plugin.cpp \
                     --replace-fail 'EDITOR_GET("export/android/debug_keystore")' 'std::getenv("GODOT_DEBUG_KEY")'
 
-                substituteInPlace editor/editor_paths.cpp \
+                substituteInPlace editor/file_system/editor_paths.cpp \
                     --replace-fail 'return get_data_dir().path_join("keystores/debug.keystore")' 'return std::getenv("GODOT_DEBUG_KEY")'
 
-                substituteInPlace editor/editor_paths.cpp \
+                substituteInPlace editor/file_system/editor_paths.cpp \
                     --replace-fail 'return get_data_dir().path_join(export_templates_folder)' 'return std::getenv("GODOT_EXPORT_TEMPLATES")'
 
                 substituteInPlace modules/gltf/register_types.cpp \
