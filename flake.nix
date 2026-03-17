@@ -7,9 +7,9 @@ inputs.android.url = "github:tadfisher/android-nixpkgs";
 
 outputs = { self, nixpkgs, android }: rec {
     system = "x86_64-linux";
-    version = "4.5.1.stable";
-    exporttemplateurl = "https://github.com/godotengine/godot-builds/releases/download/4.5.1-stable/Godot_v4.5.1-stable_export_templates.tpz";
-    exporttemplatesha256 = "sha256-a8ngfuG+nDMfF+sBJ5vcGeKsqxtjyeQuWteMEBKOwCY=";
+    version = "4.6.1.stable";
+    exporttemplateurl = "https://github.com/godotengine/godot-builds/releases/download/4.6.1-stable/Godot_v4.6.1-stable_export_templates.tpz";
+    exporttemplatesha256 = "sha256-WQsDDe1iRWfjvMlfaL7KK9bfKuFGXJHn6zvDSCN/Knk=";
     pkgs = import nixpkgs { inherit system; config = { allowUnfree = true; android_sdk.accept_license = true; }; };
 
     androidenv = android.sdk.x86_64-linux (sdkPkgs: with sdkPkgs; [
@@ -26,8 +26,8 @@ outputs = { self, nixpkgs, android }: rec {
                 name = "godot_${version}_wrapped";
                 owner = "godotengine";
                 repo = "godot";
-                rev = "f62fdbde15035c5576dad93e586201f4d41ef0cb";
-                hash = "sha256-G2JsQh2I4QYx5xUyFlNZ8vxMXT63lgojdYND+ASgdDo=";
+                rev = "14d19694e0c88a3f9e82d899a0400f27a24c176e";
+                hash = "sha256-70r5RwHtLFGwDBiUuJab6C5OZHmkJ4QwVFnRX+J6PlI=";
             };
 
             preBuild = ''
