@@ -2,7 +2,7 @@
 {
 description = "A flake for building Godot 4 with Android templates and Gradle";
 
-inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 inputs.android.url = "github:tadfisher/android-nixpkgs";
 
 outputs = { self, nixpkgs, android }: rec {
@@ -21,7 +21,7 @@ outputs = { self, nixpkgs, android }: rec {
 
     packages.x86_64-linux.godot_4_wrapped =
         with pkgs;
-        godot_4.overrideAttrs (old: {
+        godot_4_6.overrideAttrs (old: {
             src = fetchFromGitHub {
                 name = "godot_${version}_wrapped";
                 owner = "godotengine";
