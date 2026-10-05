@@ -7,9 +7,9 @@ inputs.android.url = "github:tadfisher/android-nixpkgs";
 
 outputs = { self, nixpkgs, android }: rec {
     system = "x86_64-linux";
-    version = "4.6.1.stable";
-    exporttemplateurl = "https://github.com/godotengine/godot-builds/releases/download/4.6.1-stable/Godot_v4.6.1-stable_export_templates.tpz";
-    exporttemplatesha256 = "sha256-WQsDDe1iRWfjvMlfaL7KK9bfKuFGXJHn6zvDSCN/Knk=";
+    version = "4.7.2.stable";
+    exporttemplateurl = "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz";
+    exporttemplatesha256 = "sha256-MsAtz7hE81NjfO7jXCFj7Aa5GK356BG0wiUQ6G9UgNI=";
     pkgs = import nixpkgs { inherit system; config = { allowUnfree = true; android_sdk.accept_license = true; }; };
 
     androidenv = android.sdk.x86_64-linux (sdkPkgs: with sdkPkgs; [
@@ -21,13 +21,13 @@ outputs = { self, nixpkgs, android }: rec {
 
     packages.x86_64-linux.godot_4_wrapped =
         with pkgs;
-        godot_4_6.overrideAttrs (old: {
+        godot_4_7.overrideAttrs (old: {
             src = fetchFromGitHub {
                 name = "godot_${version}_wrapped";
                 owner = "godotengine";
                 repo = "godot";
-                rev = "14d19694e0c88a3f9e82d899a0400f27a24c176e";
-                hash = "sha256-70r5RwHtLFGwDBiUuJab6C5OZHmkJ4QwVFnRX+J6PlI=";
+                rev = "ed1daf0bf001b61586d9930840f2f1394092c079";
+                hash = "sha256-QgM7m/ZTcWKQm8i5MwW+/Iz/semLknemr6N8EfRn7Fw=";
             };
 
             preBuild = ''
@@ -42,9 +42,6 @@ outputs = { self, nixpkgs, android }: rec {
 
                 substituteInPlace editor/file_system/editor_paths.cpp \
                     --replace-fail 'return get_data_dir().path_join(export_templates_folder)' 'return std::getenv("GODOT_EXPORT_TEMPLATES")'
-
-                substituteInPlace modules/gltf/register_types.cpp \
-                    --replace-fail 'EDITOR_GET("filesystem/import/blender/blender_path");' 'std::getenv("GODOT_BLENDER3_PATH");'
             '';
         });
 
